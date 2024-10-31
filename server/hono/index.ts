@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
 import { remix } from "remix-hono/handler";
 import { build } from "./build";
+import { runServerStartLogger } from "./build/logger";
 import { honoServerOptions } from "./config";
 import { getLoadContext } from "./context/remix";
 import { cache } from "./middleware/cache";
@@ -46,7 +47,11 @@ app.use(
   })
 );
 
+/**
+ * Start the server
+ */
+runServerStartLogger();
 export default {
-  port: Number(process.env.PORT) || 3002,
+  port: Number(process.env.PORT) || 6969,
   fetch: app.fetch,
 };

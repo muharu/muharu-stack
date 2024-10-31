@@ -15,7 +15,7 @@ export default defineConfig({
     target: "esnext",
   },
   server: {
-    port: 3002,
+    port: 6969,
   },
   plugins: [
     devServer({

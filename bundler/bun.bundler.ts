@@ -25,7 +25,7 @@ async function buildWithExternals(): Promise<void> {
   const outputPath = "./dist";
   const outputFile = path.join(outputPath, "index.js");
 
-  const startTime = Date.now(); // Start time
+  const startTime = Date.now();
 
   await Bun.build({
     entrypoints: ["./server/hono/index.ts"],
