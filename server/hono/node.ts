@@ -1,7 +1,8 @@
+import { serve } from "@hono/node-server";
+import { serveStatic } from "@hono/node-server/serve-static";
 import { Hono } from "hono";
-import { serveStatic } from "hono/bun";
 import { remix } from "remix-hono/handler";
-import { env } from "server/env";
+import { env } from "../env";
 import { build } from "./build";
 import { runServerStartLogger } from "./build/logger";
 import { honoServerOptions } from "./config";
@@ -51,8 +52,8 @@ app.use(
 /**
  * Start the server
  */
-runServerStartLogger("Bun");
-export default {
+runServerStartLogger("Node");
+serve({
   port: env.PORT ?? 3000,
   fetch: app.fetch,
-};
+});

@@ -13,7 +13,8 @@ RUN bun install
 COPY . .
 
 # Build the application
-RUN bun run build
+RUN bun run build:remix:bun
+RUN bun run build:server:bun
 
 # Runner Stage
 FROM base AS runner
