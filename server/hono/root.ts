@@ -1,12 +1,29 @@
 import { trpcServer } from "@hono/trpc-server";
 import { Hono } from "hono";
+import { cors } from "hono/cors";
+import { csrf } from "hono/csrf";
+import { env } from "server/env";
 import { appRouter } from "server/trpc";
 
 const app = new Hono();
 
-export const apiRoutes = app.basePath("/api").get("/hello", (ctx) => {
-  return ctx.json({ message: "Hello, World!" });
-});
+export const apiRoutes = app
+  .basePath("/api")
+  .use(
+    "*",
+    cors({
+      origin: env.NODE_ENV !== "production" ? "*" : [env.PUBLIC_BASE_URL],
+      credentials: true,
+    })
+  )
+  .use(
+    csrf({
+      origin: env.NODE_ENV !== "production" ? "*" : [env.PUBLIC_BASE_URL],
+    })
+  )
+  .get("/hello", (ctx) => {
+    return ctx.json({ message: "Hello, World!" });
+  });
 
 apiRoutes.use(
   "/procedure/*",
