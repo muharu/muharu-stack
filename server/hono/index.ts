@@ -2,8 +2,9 @@ import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
 import { remix } from "remix-hono/handler";
 import { build } from "./build";
-import { cache } from "./middleware";
-import { options } from "./options";
+import { honoServerOptions } from "./config";
+import { getLoadContext } from "./context/remix";
+import { cache } from "./middleware/cache";
 import { apiRoutes } from "./root";
 
 const app = new Hono();
@@ -17,7 +18,7 @@ app.route("/", apiRoutes);
  * Serve assets files from build/client/assets
  */
 app.use(
-  `/${options.assetsDir}/*`,
+  `/${honoServerOptions.assetsDir}/*`,
   cache(60 * 60 * 24 * 365), // 1 year
   serveStatic({ root: "./build/client" })
 );
@@ -38,10 +39,14 @@ app.use(
  */
 app.use(
   "*",
-  remix({ build, mode: process.env.NODE_ENV as "production" | "development" })
+  remix({
+    build,
+    mode: process.env.NODE_ENV as "production" | "development",
+    getLoadContext,
+  })
 );
 
-Bun.serve({
+export default {
   port: Number(process.env.PORT) || 3002,
   fetch: app.fetch,
-});
+};

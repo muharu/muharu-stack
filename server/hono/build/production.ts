@@ -1,8 +1,9 @@
 import path from "path";
-import { options } from "server/options";
+import { honoServerOptions } from "server/hono/config";
 import url from "url";
 
 export async function importProductionBuild() {
+  if (process.env.NODE_ENV !== "production") return;
   return await import(
     /* @vite-ignore */
     url
@@ -10,7 +11,7 @@ export async function importProductionBuild() {
         path.resolve(
           path.join(
             process.cwd(),
-            `./${options.buildDirectory}/${options.serverBuildFile}`
+            `./${honoServerOptions.buildDirectory}/${honoServerOptions.serverBuildFile}`
           )
         )
       )

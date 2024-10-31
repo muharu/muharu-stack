@@ -1,5 +1,6 @@
+import devServer from "@hono/vite-dev-server";
+import adapter from "@hono/vite-dev-server/bun";
 import { vitePlugin as remix } from "@remix-run/dev";
-
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
@@ -17,6 +18,11 @@ export default defineConfig({
     port: 3002,
   },
   plugins: [
+    devServer({
+      adapter,
+      entry: "server/hono/index.ts",
+      injectClientScript: false,
+    }),
     remix({
       future: {
         v3_fetcherPersist: true,

@@ -1,13 +1,13 @@
 {
-  "name": "hiresume",
+  "name": "@giverve/stack",
   "private": true,
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "dev": "NODE_ENV=development",
+    "dev": "NODE_ENV=development bunx --bun vite",
     "build": "NODE_ENV=production bun run build:remix && bun run build:server",
-    "build:remix": "NODE_ENV=production remix vite:build",
-    "build:server": "NODE_ENV=production bun build ./server/index.ts --target bun --outdir dist",
+    "build:remix": "NODE_ENV=production bunx --bun remix vite:build",
+    "build:server": "NODE_ENV=production bun build ./server/hono/index.ts --target bun --outdir dist --external lightningcss",
     "start": "NODE_ENV=production bun run dist/index.js",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "typecheck": "tsc"
@@ -16,7 +16,6 @@
     "@remix-run/node": "^2.13.1",
     "@remix-run/react": "^2.13.1",
     "@remix-run/serve": "^2.13.1",
-    "@types/bun": "^1.1.12",
     "hono": "^4.6.8",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
@@ -24,7 +23,9 @@
     "remix-hono": "^0.0.16"
   },
   "devDependencies": {
+    "@hono/vite-dev-server": "^0.16.0",
     "@remix-run/dev": "^2.13.1",
+    "@types/bun": "^1.1.12",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
@@ -39,7 +40,7 @@
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.1.6",
-    "vite": "^5.1.0",
+    "vite": "^5.4.10",
     "vite-tsconfig-paths": "^4.2.1"
   },
   "engines": {
