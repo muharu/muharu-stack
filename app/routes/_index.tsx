@@ -2,7 +2,7 @@ import type { MetaFunction } from "@remix-run/node";
 import { trpc } from "~/lib/trpc";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Create Giverve Stack" }];
+  return [{ title: "Create Muharu Stack" }];
 };
 
 export default function Index() {

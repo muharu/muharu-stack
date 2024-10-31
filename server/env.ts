@@ -2,7 +2,7 @@ import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
 
 export const serverEnv = z.object({
-  NODE_ENV: z.enum(["development", "production"]),
+  NODE_ENV: z.enum(["development", "production"]).optional(),
   PORT: z
     .string()
     .transform((v) => Number(v))

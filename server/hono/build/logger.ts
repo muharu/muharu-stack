@@ -11,7 +11,7 @@ ${chalk.green.bold("→")} ${chalk.white("Runtime:")} ${chalk.yellow.bold(
     runtime
   )}
 ${chalk.green.bold("→")} ${chalk.white("Environment:")} ${chalk.cyan.bold(
-    env.NODE_ENV || "development"
+    env.NODE_ENV ?? "development"
   )}
 `);
 }
