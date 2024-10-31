@@ -7,8 +7,8 @@
     "dev": "cross-env NODE_ENV=development bunx --bun vite",
     "build": "bun run clean && cross-env NODE_ENV=production bun run build:server && bun run build:remix",
     "build:remix": "cross-env NODE_ENV=production bunx --bun remix vite:build",
-    "build:server": "cross-env NODE_ENV=production bun run ./bundler/bun.bundler.ts",
-    "start": "cross-env NODE_ENV=production bun run dist/index.js",
+    "build:server": "cross-env NODE_ENV=production bun run ./bundler/bun/index.ts",
+    "start": "cross-env NODE_ENV=production bun run dist/bun.js",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "clean": "rimraf ./dist && rimraf ./build"
   },

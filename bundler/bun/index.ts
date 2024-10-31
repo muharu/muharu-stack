@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import { promises as fs } from "fs";
 import path from "path";
-import packageJson from "../package.json";
+import packageJson from "../../package.json";
 
 function getExternalsFromPackageJson(): string[] {
   const sections: (keyof typeof packageJson)[] = [
@@ -23,12 +23,12 @@ function getExternalsFromPackageJson(): string[] {
 async function buildWithExternals(): Promise<void> {
   const externalDeps = getExternalsFromPackageJson();
   const outputPath = "./dist";
-  const outputFile = path.join(outputPath, "index.js");
+  const outputFile = path.join(outputPath, "bun.js");
 
   const startTime = Date.now();
 
   await Bun.build({
-    entrypoints: ["./server/hono/index.ts"],
+    entrypoints: ["./server/hono/bun.ts"],
     outdir: outputPath,
     target: "bun",
     external: externalDeps,

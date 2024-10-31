@@ -17,6 +17,7 @@ export const apiRoutes = app
     })
   )
   .use(
+    "*",
     csrf({
       origin: env.NODE_ENV !== "production" ? "*" : [env.PUBLIC_BASE_URL],
     })

@@ -9,7 +9,7 @@ import { getLoadContext } from "./context/remix";
 import { cache } from "./middleware/cache";
 import { apiRoutes } from "./root";
 
-const app = new Hono();
+export const app = new Hono();
 
 /**
  * Serve api routes
@@ -30,11 +30,11 @@ app.use(
  */
 app.use(
   "*",
-  cache(60 * 60),
+  cache(60 * 60), // 1 hour
   serveStatic({
     root: env.NODE_ENV === "production" ? "./build/client" : "./public",
   })
-); // 1 hour
+);
 
 /**
  * Add remix middleware to Hono server

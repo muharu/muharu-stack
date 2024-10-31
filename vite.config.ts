@@ -20,7 +20,7 @@ export default defineConfig({
   plugins: [
     devServer({
       adapter,
-      entry: "server/hono/index.ts",
+      entry: "server/hono/bun.ts",
       injectClientScript: false,
     }),
     remix({
