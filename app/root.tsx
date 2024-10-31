@@ -6,6 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { TRPCProvider } from "./lib/trpc/provider";
 import "./tailwind.css";
 
 export const links: LinksFunction = () => [
@@ -40,5 +41,9 @@ export function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <TRPCProvider>
+      <Outlet />
+    </TRPCProvider>
+  );
 }
