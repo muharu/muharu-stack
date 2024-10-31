@@ -50,7 +50,7 @@ app.use(
 /**
  * Start the server
  */
-runServerStartLogger();
+runServerStartLogger("Bun");
 export default {
   port: Number(process.env.PORT) || 6969,
   fetch: app.fetch,
