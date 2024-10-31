@@ -1,5 +1,7 @@
+import { env } from "server/env";
+
 export async function importDevelopmentBuild() {
-  if (process.env.NODE_ENV === "production") return;
+  if (env.NODE_ENV === "production") return;
 
   const vite = await import("vite");
   const viteDevServer = await vite.createServer({

@@ -15,7 +15,7 @@ export default defineConfig({
     target: "esnext",
   },
   server: {
-    port: 6969,
+    port: process.env.PORT ? Number(process.env.PORT) : 6969,
   },
   plugins: [
     devServer({

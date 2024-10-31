@@ -1,9 +1,10 @@
 import path from "path";
+import { env } from "server/env";
 import { honoServerOptions } from "server/hono/config";
 import url from "url";
 
 export async function importProductionBuild() {
-  if (process.env.NODE_ENV !== "production") return;
+  if (env.NODE_ENV !== "production") return;
   return await import(
     /* @vite-ignore */
     url

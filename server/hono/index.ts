@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
 import { remix } from "remix-hono/handler";
+import { env } from "server/env";
 import { build } from "./build";
 import { runServerStartLogger } from "./build/logger";
 import { honoServerOptions } from "./config";
@@ -31,7 +32,7 @@ app.use(
   "*",
   cache(60 * 60),
   serveStatic({
-    root: process.env.NODE_ENV === "production" ? "./build/client" : "./public",
+    root: env.NODE_ENV === "production" ? "./build/client" : "./public",
   })
 ); // 1 hour
 
@@ -42,7 +43,7 @@ app.use(
   "*",
   remix({
     build,
-    mode: process.env.NODE_ENV as "production" | "development",
+    mode: env.NODE_ENV,
     getLoadContext,
   })
 );
@@ -52,6 +53,6 @@ app.use(
  */
 runServerStartLogger("Bun");
 export default {
-  port: Number(process.env.PORT) || 6969,
+  port: env.PORT ?? 6969,
   fetch: app.fetch,
 };

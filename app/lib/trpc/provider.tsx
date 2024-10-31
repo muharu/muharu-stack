@@ -45,7 +45,7 @@ export function TRPCProvider({ children }: Readonly<{ children: ReactNode }>) {
            * @see https://trpc.io/docs/data-transformers
            */
           transformer: superjson,
-          url: "api/procedure",
+          url: "/api/procedure",
           // include cookies in requests to the server for authentication purposes
           fetch(url, options) {
             return fetch(url, {

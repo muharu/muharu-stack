@@ -1,7 +1,7 @@
 import { Context } from "hono";
+import { env } from "server/env";
 
 export function getLoadContext(c: Context) {
-  const env = process.env;
   return { env, honoContext: c };
 }
 
