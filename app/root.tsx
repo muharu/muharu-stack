@@ -6,6 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { ClientOnly } from "./lib/renderer/client-only";
 import { TRPCProvider } from "./lib/trpc/provider";
 import "./tailwind.css";
 
@@ -22,7 +23,9 @@ export const links: LinksFunction = () => [
   },
 ];
 
-export function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
+export function Document({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <head>
@@ -40,10 +43,20 @@ export function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
   );
 }
 
-export default function App() {
+function AppContent() {
   return (
     <TRPCProvider>
       <Outlet />
     </TRPCProvider>
   );
+}
+
+export default function App() {
+  const content = import.meta.env.PROD ? (
+    <AppContent />
+  ) : (
+    <ClientOnly>{() => <AppContent />}</ClientOnly>
+  );
+
+  return <Document>{content}</Document>;
 }

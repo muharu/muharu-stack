@@ -3,7 +3,7 @@ import { env } from "server/env";
 
 export function runServerStartLogger(runtime: "Bun" | "Node") {
   console.log(`
-${chalk.black.bold("🔥  Hono Server Status")}
+${chalk.black.bold("🔥 Hono Server Status")}
 ${chalk.green.bold("→")} ${chalk.white("Port:")} ${chalk.blue.bold(
     env.PORT ?? 3000,
   )}

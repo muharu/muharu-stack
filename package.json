@@ -4,7 +4,7 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development bunx --bun vite",
+    "dev": "cross-env NODE_ENV=development bunx --bun vite --host",
     "build": "cross-env NODE_ENV=production bun run clean && bun run build:server:bun && bun run build:server:node && bun run build:remix:bun",
     "build:remix:bun": "cross-env NODE_ENV=production bunx --bun remix vite:build",
     "build:remix:node": "cross-env NODE_ENV=production remix vite:build",
