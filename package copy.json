@@ -17,7 +17,7 @@
     "db:migrate": "bun run drizzle-kit migrate",
     "db:seed": "bun run ./server/db/seeder.ts",
     "db:gui": "bun drizzle-kit studio --verbose",
-    "auth:generate": "bunx --bun @better-auth/cli generate --config ./server/auth/index.ts",
+    "auth:generate": "bunx --bun @better-auth/cli generate --config server/auth.ts",
     "format": "prettier --write ./app ./server ./bundler",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "clean": "rimraf ./dist && rimraf ./build"
