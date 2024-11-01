@@ -1,7 +1,7 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { env } from "server/env";
-import { DbLogger } from "./utils/logger";
 import * as schema from "./schema";
+import { DbLogger } from "./utils/logger";
 
 const logger = env.NODE_ENV === "development" && new DbLogger();
 

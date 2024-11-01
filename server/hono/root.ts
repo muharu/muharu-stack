@@ -2,14 +2,10 @@ import { trpcServer } from "@hono/trpc-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { csrf } from "hono/csrf";
-import { auth } from "server/auth";
 import { env } from "server/env";
 import { appRouter } from "server/trpc";
 
 const app = new Hono().basePath("/api");
-
-app.get("auth/*", (c) => auth.handler(c.req.raw));
-app.post("auth/*", (c) => auth.handler(c.req.raw));
 
 export const apiRoutes = app
   .use(
