@@ -1,4 +1,7 @@
 import { initTRPC } from "@trpc/server";
+import { eq } from "drizzle-orm";
+import { db } from "server/db";
+import { usersTable } from "server/db/schema";
 import superjson from "superjson";
 import { z } from "zod";
 
@@ -16,9 +19,20 @@ export const appRouter = router({
         name: z.string(),
       }),
     )
-    .query(({ input }) => {
+    .query(async ({ input }) => {
+      const [result] = await db
+        .select({ email: usersTable.email })
+        .from(usersTable)
+        .where(eq(usersTable.name, input.name));
+
+      if (!result) {
+        return {
+          message: `No user found with the name: ${input.name} in our database`,
+        };
+      }
+
       return {
-        message: `Hello, ${input.name}!`,
+        message: `This is your email from Database: ${result.email}`,
       };
     }),
 });

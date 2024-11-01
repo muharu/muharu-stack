@@ -1,11 +1,10 @@
 import { createEnv } from "@t3-oss/env-core";
-import { config } from "dotenv";
+import "dotenv/config";
 import { z } from "zod";
-
-config();
 
 export const serverEnv = z.object({
   NODE_ENV: z.enum(["development", "production"]).optional(),
+  DATABASE_URL: z.string(),
   PORT: z
     .string()
     .transform((v) => Number(v))

@@ -1,11 +1,9 @@
 import devServer from "@hono/vite-dev-server";
 import adapter from "@hono/vite-dev-server/bun";
 import { vitePlugin as remix } from "@remix-run/dev";
-import { config } from "dotenv";
+import { env } from "server/env";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-
-config();
 
 declare module "@remix-run/node" {
   interface Future {
@@ -18,7 +16,7 @@ export default defineConfig({
     target: "esnext",
   },
   server: {
-    port: process.env.PORT ? Number(process.env.PORT) : 3000,
+    port: env.PORT ?? 3000,
   },
   plugins: [
     devServer({
