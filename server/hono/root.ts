@@ -5,9 +5,9 @@ import { csrf } from "hono/csrf";
 import { env } from "server/env";
 import { appRouter } from "server/trpc";
 
-const app = new Hono().basePath("/api");
+const restApiApp = new Hono().basePath("/api");
 
-export const apiRoutes = app
+export const apiRoutes = restApiApp
   .use(
     "*",
     cors({

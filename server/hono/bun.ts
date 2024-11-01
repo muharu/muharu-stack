@@ -9,17 +9,17 @@ import { getLoadContext } from "./context/remix";
 import { cache } from "./middleware/cache";
 import { apiRoutes } from "./root";
 
-export const app = new Hono();
+export const bunApp = new Hono();
 
 /**
  * Serve api routes
  */
-app.route("/", apiRoutes);
+bunApp.route("/", apiRoutes);
 
 /**
  * Serve assets files from build/client/assets
  */
-app.use(
+bunApp.use(
   `/${honoServerOptions.assetsDir}/*`,
   cache(60 * 60 * 24 * 365), // 1 year
   serveStatic({ root: "./build/client" }),
@@ -28,7 +28,7 @@ app.use(
 /**
  * Serve public files
  */
-app.use(
+bunApp.use(
   "*",
   cache(60 * 60), // 1 hour
   serveStatic({
@@ -39,7 +39,7 @@ app.use(
 /**
  * Add remix middleware to Hono server
  */
-app.use(
+bunApp.use(
   "*",
   remix({
     build,
@@ -54,5 +54,5 @@ app.use(
 runServerStartLogger("Bun");
 export default {
   port: env.PORT ?? 3000,
-  fetch: app.fetch,
+  fetch: bunApp.fetch,
 };
