@@ -22,7 +22,7 @@ bunApp.route("/", apiRoutes);
 bunApp.use(
   `/${honoServerOptions.assetsDir}/*`,
   cache(60 * 60 * 24 * 365), // 1 year
-  serveStatic({ root: "./build/client" }),
+  serveStatic({ root: "./dist/build/client" }),
 );
 
 /**
@@ -32,7 +32,7 @@ bunApp.use(
   "*",
   cache(60 * 60), // 1 hour
   serveStatic({
-    root: env.NODE_ENV === "production" ? "./build/client" : "./public",
+    root: env.NODE_ENV === "production" ? "./dist/build/client" : "./public",
   }),
 );
 

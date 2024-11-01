@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "dist/vercel.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "dist/build/server/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "dist/build/client/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/assets/(.*)",
+      "destination": "/dist/build/client/assets/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/dist/vercel.js"
+    }
+  ]
+}

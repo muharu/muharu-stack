@@ -1,5 +1,5 @@
 export const honoServerOptions = {
-  buildDirectory: "build/server",
+  buildDirectory: "dist/build/server",
   serverBuildFile: "index.js",
   assetsDir: "assets",
 };

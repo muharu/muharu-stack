@@ -25,6 +25,7 @@ export default defineConfig({
       injectClientScript: false,
     }),
     remix({
+      buildDirectory: "dist/build",
       future: {
         v3_fetcherPersist: true,
         v3_relativeSplatPath: true,

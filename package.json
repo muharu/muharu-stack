@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env NODE_ENV=development bunx --bun vite --host",
-    "build": "cross-env NODE_ENV=production bun run clean && bun run build:server:bun && bun run build:server:node && bun run build:remix:bun",
+    "build": "cross-env NODE_ENV=production bun run clean && bun run build:server:bun && bun run build:server:node && bun run build:server:vercel && bun run build:remix:bun",
     "build:remix:bun": "cross-env NODE_ENV=production bunx --bun remix vite:build",
     "build:remix:node": "cross-env NODE_ENV=production remix vite:build",
     "build:server:bun": "cross-env NODE_ENV=production bun run ./bundler/bun/index.ts",
     "build:server:node": "cross-env NODE_ENV=production tsx ./bundler/node/index.ts",
+    "build:server:vercel": "cross-env NODE_ENV=production NODEJS_HELPERS=0 tsx ./bundler/vercel/index.ts",
     "start:server:bun": "cross-env NODE_ENV=production bun run dist/bun.js",
     "start:server:node": "cross-env NODE_ENV=production node dist/node.js",
     "db:push": "bun run drizzle-kit push",
@@ -19,7 +20,7 @@
     "db:gui": "bun drizzle-kit studio --verbose",
     "format": "prettier --write ./app ./server ./bundler",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-    "clean": "rimraf ./dist && rimraf ./build"
+    "clean": "rimraf ./dist"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.4",

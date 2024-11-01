@@ -1,8 +1,8 @@
-import { serve } from "@hono/node-server";
 import { serveStatic } from "@hono/node-server/serve-static";
+import { handle } from "@hono/node-server/vercel";
 import { Hono } from "hono";
 import { remix } from "remix-hono/handler";
-import { env } from "../env";
+import { env } from "server/env";
 import { build } from "./build";
 import { runServerStartLogger } from "./build/logger";
 import { honoServerOptions } from "./config";
@@ -10,17 +10,17 @@ import { getLoadContext } from "./context/remix";
 import { cache } from "./middleware/cache";
 import { apiRoutes } from "./root";
 
-export const nodeApp = new Hono();
+const vercelApp = new Hono();
 
 /**
  * Serve api routes
  */
-nodeApp.route("/", apiRoutes);
+vercelApp.route("/", apiRoutes);
 
 /**
  * Serve assets files from build/client/assets
  */
-nodeApp.use(
+vercelApp.use(
   `/${honoServerOptions.assetsDir}/*`,
   cache(60 * 60 * 24 * 365), // 1 year
   serveStatic({ root: "./dist/build/client" }),
@@ -29,7 +29,7 @@ nodeApp.use(
 /**
  * Serve public files
  */
-nodeApp.use(
+vercelApp.use(
   "*",
   cache(60 * 60), // 1 hour
   serveStatic({
@@ -40,7 +40,7 @@ nodeApp.use(
 /**
  * Add remix middleware to Hono server
  */
-nodeApp.use(
+vercelApp.use(
   "*",
   remix({
     build,
@@ -52,8 +52,10 @@ nodeApp.use(
 /**
  * Start the server
  */
-runServerStartLogger("Node");
-serve({
-  port: env.PORT ?? 3000,
-  fetch: nodeApp.fetch,
-});
+runServerStartLogger("Vercel");
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+export default handle(vercelApp);

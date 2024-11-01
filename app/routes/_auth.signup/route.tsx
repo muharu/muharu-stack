@@ -28,7 +28,7 @@ export default function AuthLayout() {
       <button className="rounded-md border p-4" onClick={() => refetch()}>
         Refetch Test
       </button>
-      <button className="rounded-md border p-4">Signin With Github</button>
+      <button className="rounded-md border p-4">Signup With Github</button>
     </main>
   );
 }

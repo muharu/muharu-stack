@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import { env } from "server/env";
 
-export function runServerStartLogger(runtime: "Bun" | "Node") {
+export function runServerStartLogger(runtime: "Bun" | "Node" | "Vercel") {
   console.log(`
 ${chalk.black.bold("🔥 Hono Server Status")}
 ${chalk.green.bold("→")} ${chalk.white("Port:")} ${chalk.blue.bold(
