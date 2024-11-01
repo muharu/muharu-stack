@@ -12,9 +12,9 @@ export async function importProductionBuild() {
         path.resolve(
           path.join(
             process.cwd(),
-            `./${honoServerOptions.buildDirectory}/${honoServerOptions.serverBuildFile}`
-          )
-        )
+            `./${honoServerOptions.buildDirectory}/${honoServerOptions.serverBuildFile}`,
+          ),
+        ),
       )
       .toString()
   );

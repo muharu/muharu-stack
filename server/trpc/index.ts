@@ -14,7 +14,7 @@ export const appRouter = router({
     .input(
       z.object({
         name: z.string(),
-      })
+      }),
     )
     .query(({ input }) => {
       return {

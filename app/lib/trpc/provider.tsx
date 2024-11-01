@@ -22,7 +22,7 @@ export function TRPCProvider({ children }: Readonly<{ children: ReactNode }>) {
             refetchOnReconnect: false,
           },
         },
-      })
+      }),
   );
 
   const [trpcClient] = useState(() =>
@@ -55,7 +55,7 @@ export function TRPCProvider({ children }: Readonly<{ children: ReactNode }>) {
           },
         }),
       ],
-    })
+    }),
   );
 
   return (

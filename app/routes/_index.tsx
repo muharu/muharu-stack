@@ -11,7 +11,7 @@ export default function Index() {
   });
   return (
     <main>
-      <div className="flex justify-center items-center h-screen text-xl font-semibold">
+      <div className="flex h-screen items-center justify-center text-xl font-semibold">
         {isLoading ? "Loading..." : data?.message}
       </div>
     </main>

@@ -42,7 +42,7 @@ async function buildWithExternals(): Promise<void> {
     console.log(
       chalk.green.bold("Hono Bun Server Build completed:") +
         chalk.cyan(` Time: ${buildTime} ms,`) +
-        chalk.magenta(` Size: ${(stats.size / 1024).toFixed(2)} KB`)
+        chalk.magenta(` Size: ${(stats.size / 1024).toFixed(2)} KB`),
     );
   } catch (error) {
     console.error(chalk.red("Error retrieving build file size:"), error);

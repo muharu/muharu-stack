@@ -14,13 +14,13 @@ export const apiRoutes = app
     cors({
       origin: env.NODE_ENV !== "production" ? "*" : [env.PUBLIC_BASE_URL],
       credentials: true,
-    })
+    }),
   )
   .use(
     "*",
     csrf({
       origin: env.NODE_ENV !== "production" ? "*" : [env.PUBLIC_BASE_URL],
-    })
+    }),
   )
   .get("/hello", (ctx) => {
     return ctx.json({ message: "Hello, World!" });
@@ -31,7 +31,7 @@ apiRoutes.use(
   trpcServer({
     router: appRouter,
     endpoint: "/api/procedure",
-  })
+  }),
 );
 
 export type ApiRoutes = typeof apiRoutes;

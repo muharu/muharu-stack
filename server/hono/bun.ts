@@ -22,7 +22,7 @@ app.route("/", apiRoutes);
 app.use(
   `/${honoServerOptions.assetsDir}/*`,
   cache(60 * 60 * 24 * 365), // 1 year
-  serveStatic({ root: "./build/client" })
+  serveStatic({ root: "./build/client" }),
 );
 
 /**
@@ -33,7 +33,7 @@ app.use(
   cache(60 * 60), // 1 hour
   serveStatic({
     root: env.NODE_ENV === "production" ? "./build/client" : "./public",
-  })
+  }),
 );
 
 /**
@@ -45,7 +45,7 @@ app.use(
     build,
     mode: env.NODE_ENV,
     getLoadContext,
-  })
+  }),
 );
 
 /**
