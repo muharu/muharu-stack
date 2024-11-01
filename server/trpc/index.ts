@@ -1,7 +1,7 @@
 import { initTRPC } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import { db } from "server/db";
-import { usersTable } from "server/db/schema";
+import { userTable } from "server/db/schema";
 import superjson from "superjson";
 import { z } from "zod";
 
@@ -21,9 +21,9 @@ export const appRouter = router({
     )
     .query(async ({ input }) => {
       const [result] = await db
-        .select({ email: usersTable.email })
-        .from(usersTable)
-        .where(eq(usersTable.name, input.name));
+        .select({ email: userTable.email })
+        .from(userTable)
+        .where(eq(userTable.name, input.name));
 
       if (!result) {
         return {
