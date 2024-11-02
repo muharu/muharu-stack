@@ -1,13 +1,15 @@
 import { env } from "server/env";
 
+const viteDevServer =
+  env.NODE_ENV === "production"
+    ? undefined
+    : await import("vite").then((vite) =>
+        vite.createServer({
+          server: { middlewareMode: true },
+          appType: "custom",
+        }),
+      );
+
 export async function importDevelopmentBuild() {
-  if (env.NODE_ENV === "production") return;
-
-  const vite = await import("vite");
-  const viteDevServer = await vite.createServer({
-    server: { middlewareMode: true },
-    appType: "custom",
-  });
-
-  return viteDevServer.ssrLoadModule("virtual:remix/server-build");
+  return viteDevServer?.ssrLoadModule("virtual:remix/server-build");
 }

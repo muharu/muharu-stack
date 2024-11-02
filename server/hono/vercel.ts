@@ -3,7 +3,7 @@ import { handle } from "@hono/node-server/vercel";
 import { Hono } from "hono";
 import { remix } from "remix-hono/handler";
 import { env } from "server/env";
-import { build } from "./build";
+import { handleBuild } from "./build";
 import { runServerStartLogger } from "./build/logger";
 import { honoServerOptions } from "./config";
 import { getLoadContext } from "./context/remix";
@@ -40,14 +40,14 @@ vercelApp.use(
 /**
  * Add remix middleware to Hono server
  */
-vercelApp.use(
-  "*",
-  remix({
+vercelApp.use(async (ctx, next) => {
+  const build = await handleBuild();
+  return remix({
     build,
     mode: env.NODE_ENV,
     getLoadContext,
-  }),
-);
+  })(ctx, next);
+});
 
 /**
  * Start the server

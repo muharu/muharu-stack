@@ -1,7 +1,6 @@
 import type { LinksFunction } from "@remix-run/node";
 import { Links, Meta, Scripts, ScrollRestoration } from "@remix-run/react";
 import { App } from "./app";
-import { ClientOnly } from "./lib/renderer/client-only";
 import "./tailwind.css";
 
 export const links: LinksFunction = () => [
@@ -22,13 +21,8 @@ export function Document({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Meta />
-        <Links />
-      </head>
-      <body>
+      <Head />
+      <body className="min-h-[100dvh] scroll-smooth antialiased">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -37,12 +31,21 @@ export function Document({
   );
 }
 
-export default function Root() {
-  const app = import.meta.env.PROD ? (
-    <App />
-  ) : (
-    <ClientOnly>{() => <App />}</ClientOnly>
+function Head() {
+  return (
+    <head>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <Meta />
+      <Links />
+    </head>
   );
+}
 
-  return <Document>{app}</Document>;
+export default function Root() {
+  return (
+    <Document>
+      <App />
+    </Document>
+  );
 }

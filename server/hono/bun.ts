@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
 import { remix } from "remix-hono/handler";
 import { env } from "server/env";
-import { build } from "./build";
+import { handleBuild } from "./build";
 import { runServerStartLogger } from "./build/logger";
 import { honoServerOptions } from "./config";
 import { getLoadContext } from "./context/remix";
@@ -39,14 +39,14 @@ bunApp.use(
 /**
  * Add remix middleware to Hono server
  */
-bunApp.use(
-  "*",
-  remix({
+bunApp.use(async (ctx, next) => {
+  const build = await handleBuild();
+  return remix({
     build,
     mode: env.NODE_ENV,
     getLoadContext,
-  }),
-);
+  })(ctx, next);
+});
 
 /**
  * Start the server
