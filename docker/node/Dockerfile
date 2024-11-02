@@ -14,8 +14,9 @@ RUN npm install
 COPY . .
 
 # Build the application
-RUN npm run build:remix:node
-RUN npm run build:server:node
+ENV NODE_ENV=production
+RUN npm run remix vite:build
+RUN npm run tsx bundler/node/index.ts
 
 # Runner Stage
 FROM base AS runner

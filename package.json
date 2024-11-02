@@ -19,7 +19,9 @@
     "db:seed": "bun run ./server/db/seeder.ts",
     "db:gui": "bun drizzle-kit studio --verbose",
     "ui:add": "bunx --bun shadcn@latest add",
-    "format": "prettier --write ./app ./server ./bundler",
+    "format": "prettier --check ./app ./server ./bundler",
+    "format:fix": "prettier --write ./app ./server ./bundler",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "clean": "rimraf ./dist"
