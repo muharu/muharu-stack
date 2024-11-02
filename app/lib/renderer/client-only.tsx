@@ -1,11 +1,6 @@
-import * as React from "react";
+import { type RendererProps } from "./types";
 import { useHydrated } from "./use-hydrated";
 
-type ClientOnlyProps = {
-  children(): React.ReactNode;
-  fallback?: React.ReactNode;
-};
-
-export function ClientOnly({ children, fallback = null }: ClientOnlyProps) {
+export function ClientOnly({ children, fallback = null }: RendererProps) {
   return useHydrated() ? <>{children()}</> : <>{fallback}</>;
 }

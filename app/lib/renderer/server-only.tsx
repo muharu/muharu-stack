@@ -1,11 +1,6 @@
-import * as React from "react";
+import { type RendererProps } from "./types";
 import { useHydrated } from "./use-hydrated";
 
-type ServerOnlyProps = {
-  children(): React.ReactNode;
-  fallback?: React.ReactNode;
-};
-
-export function ServerOnly({ children, fallback = null }: ServerOnlyProps) {
+export function ServerOnly({ children, fallback = null }: RendererProps) {
   return useHydrated() ? <>{fallback}</> : <>{children()}</>;
 }
