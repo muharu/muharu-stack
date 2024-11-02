@@ -13,8 +13,8 @@ RUN bun install
 COPY . .
 
 # Build the application
-RUN bun run build:remix:bun
-RUN bun run build:server:bun
+RUN bun run build:remix
+RUN bun run build:bun
 
 # Runner Stage
 FROM base AS runner
@@ -29,7 +29,6 @@ RUN id -u hono &>/dev/null || adduser --system --uid 1001 hono
 
 # Copy built application from builder
 COPY --from=builder --chown=hono:bun /app/dist ./dist
-COPY --from=builder --chown=hono:bun /app/build ./build
 
 # Copy package files and install production dependencies
 COPY package.json bun.lockb* ./

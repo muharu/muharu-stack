@@ -1,7 +1,7 @@
 import devServer from "@hono/vite-dev-server";
 import adapter from "@hono/vite-dev-server/bun";
 import { vitePlugin as remix } from "@remix-run/dev";
-import { env } from "server/env";
+import "dotenv/config";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
@@ -16,7 +16,10 @@ export default defineConfig({
     target: "esnext",
   },
   server: {
-    port: env.PORT ?? 3000,
+    port: process.env.PORT ? Number(process.env.PORT) : 3000,
+  },
+  optimizeDeps: {
+    force: true,
   },
   plugins: [
     devServer({

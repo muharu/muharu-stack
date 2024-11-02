@@ -14,9 +14,8 @@ RUN npm install
 COPY . .
 
 # Build the application
-ENV NODE_ENV=production
-RUN npm run remix vite:build
-RUN npm run tsx bundler/node/index.ts
+RUN npm run build:remix
+RUN npm run build:node
 
 # Runner Stage
 FROM base AS runner
@@ -31,7 +30,6 @@ RUN id -u hono &>/dev/null || adduser --system --uid 1001 hono
 
 # Copy built application from builder
 COPY --from=builder --chown=hono:node /app/dist ./dist
-COPY --from=builder --chown=hono:node /app/build ./build
 
 # Copy package files and install production dependencies
 COPY package.json package-lock.json* ./
