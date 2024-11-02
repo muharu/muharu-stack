@@ -53,9 +53,4 @@ vercelApp.use(
  * Start the server
  */
 runServerStartLogger("Vercel");
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
 export default handle(vercelApp);

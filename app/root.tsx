@@ -1,13 +1,7 @@
 import type { LinksFunction } from "@remix-run/node";
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from "@remix-run/react";
+import { Links, Meta, Scripts, ScrollRestoration } from "@remix-run/react";
+import { App } from "./app";
 import { ClientOnly } from "./lib/renderer/client-only";
-import { TRPCProvider } from "./lib/trpc/provider";
 import "./tailwind.css";
 
 export const links: LinksFunction = () => [
@@ -43,20 +37,12 @@ export function Document({
   );
 }
 
-function AppContent() {
-  return (
-    <TRPCProvider>
-      <Outlet />
-    </TRPCProvider>
-  );
-}
-
-export default function App() {
-  const content = import.meta.env.PROD ? (
-    <AppContent />
+export default function Root() {
+  const app = import.meta.env.PROD ? (
+    <App />
   ) : (
-    <ClientOnly>{() => <AppContent />}</ClientOnly>
+    <ClientOnly>{() => <App />}</ClientOnly>
   );
 
-  return <Document>{content}</Document>;
+  return <Document>{app}</Document>;
 }
