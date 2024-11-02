@@ -1,3 +1,4 @@
+import { type ServerBuild } from "@remix-run/node";
 import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
 import { remix } from "remix-hono/handler";
@@ -40,7 +41,7 @@ bunApp.use(
  * Add remix middleware to Hono server
  */
 bunApp.use(async (ctx, next) => {
-  const build = await handleBuild();
+  const build = (await handleBuild()) as ServerBuild;
   return remix({
     build,
     mode: env.NODE_ENV,

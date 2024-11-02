@@ -1,5 +1,6 @@
 import { serveStatic } from "@hono/node-server/serve-static";
 import { handle } from "@hono/node-server/vercel";
+import { type ServerBuild } from "@remix-run/node";
 import { Hono } from "hono";
 import { remix } from "remix-hono/handler";
 import { env } from "server/env";
@@ -41,7 +42,7 @@ vercelApp.use(
  * Add remix middleware to Hono server
  */
 vercelApp.use(async (ctx, next) => {
-  const build = await handleBuild();
+  const build = (await handleBuild()) as ServerBuild;
   return remix({
     build,
     mode: env.NODE_ENV,
