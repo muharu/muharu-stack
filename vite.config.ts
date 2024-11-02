@@ -21,8 +21,9 @@ export default defineConfig({
   plugins: [
     devServer({
       adapter,
-      entry: "server/hono/bun.ts",
       injectClientScript: false,
+      entry: "server/hono/bun.ts",
+      exclude: [`/app/**/*`, `/app/**/.*/**`, /^\/@.+$/, /^\/node_modules\/.*/],
     }),
     remix({
       buildDirectory: "dist/build",
