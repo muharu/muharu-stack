@@ -1,5 +1,6 @@
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import { buttonVariants } from "~/components/ui/button";
 import { trpc } from "~/lib/trpc";
 
 export const loader: LoaderFunction = async () => {
@@ -25,10 +26,10 @@ export default function AuthLayout() {
   return (
     <main className="flex h-screen flex-col items-center justify-center gap-y-5">
       {isLoading ? "Loading..." : data?.message}
-      <button className="rounded-md border p-4" onClick={() => refetch()}>
+      <button className={buttonVariants()} onClick={() => refetch()}>
         Refetch Test
       </button>
-      <button className="rounded-md border p-4">Signup With Github</button>
+      <button className={buttonVariants()}>Signup With Github</button>
     </main>
   );
 }

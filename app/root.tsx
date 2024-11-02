@@ -22,7 +22,7 @@ export function Document({
   return (
     <html lang="en">
       <Head />
-      <body className="min-h-[100dvh] scroll-smooth antialiased">
+      <body>
         {children}
         <ScrollRestoration />
         <Scripts />
