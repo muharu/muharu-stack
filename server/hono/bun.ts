@@ -1,13 +1,13 @@
 import { type ServerBuild } from "@remix-run/node";
 import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
-import { remix } from "remix-hono/handler";
 import { env } from "server/env";
 import { handleBuild } from "./build";
 import { runServerStartLogger } from "./build/logger";
 import { honoServerOptions } from "./config";
 import { getLoadContext } from "./context/remix";
 import { cache } from "./middleware/cache";
+import { remix } from "./middleware/remix";
 import { apiRoutes } from "./root";
 
 export const bunApp = new Hono();
