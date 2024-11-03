@@ -4,7 +4,7 @@ import { cors } from "hono/cors";
 import { csrf } from "hono/csrf";
 import { env } from "server/env";
 import { appRouter } from "server/trpc";
-import { auth } from "./middleware/auth";
+import { authRoute } from "./api/routes/auth.route";
 
 const restApiApp = new Hono().basePath("/api");
 
@@ -22,9 +22,7 @@ export const apiRoutes = restApiApp
       origin: env.NODE_ENV !== "production" ? "*" : [env.PUBLIC_BASE_URL],
     }),
   )
-  .get("/hello", auth, (ctx) => {
-    return ctx.json({ message: "Hello, World!" });
-  });
+  .route("/auth", authRoute);
 
 apiRoutes.use(
   "/procedure/*",
