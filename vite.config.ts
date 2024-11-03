@@ -18,9 +18,6 @@ export default defineConfig({
   server: {
     port: process.env.PORT ? Number(process.env.PORT) : 3000,
   },
-  optimizeDeps: {
-    force: true,
-  },
   plugins: [
     devServer({
       adapter,
