@@ -1,5 +1,5 @@
 import { Outlet } from "@remix-run/react";
-import { TRPCProvider } from "./lib/trpc/provider";
+import { TRPCProvider } from "./lib/query/provider";
 
 export function App() {
   return (
