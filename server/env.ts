@@ -14,7 +14,7 @@ export const serverEnv = z.object({
     .optional(),
 });
 
-export const clientEnv = z.object({
+export const publicEnv = z.object({
   PUBLIC_BASE_URL: z.string().url(),
 });
 
@@ -27,7 +27,7 @@ export const env = createEnv({
    */
   clientPrefix: "PUBLIC_",
 
-  client: clientEnv.shape,
+  client: publicEnv.shape,
 
   /**
    * What object holds the environment variables at runtime. This is usually
@@ -52,4 +52,4 @@ export const env = createEnv({
 });
 
 export type ServerEnv = z.infer<typeof serverEnv>;
-export type ClientEnv = z.infer<typeof clientEnv>;
+export type PublicEnv = z.infer<typeof publicEnv>;
