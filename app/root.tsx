@@ -14,12 +14,12 @@ import "./tailwind.css";
 
 export const loader: LoaderFunction = async ({ context }) => {
   const { env } = context;
-  const publicEnv = Object.keys(env)
-    .filter((key) => key.startsWith("PUBLIC_"))
-    .reduce((acc: { [key: string]: string }, key) => {
-      acc[key] = String(env[key as keyof typeof env]);
-      return acc;
-    }, {});
+  const publicEnv: { [key: string]: string } = {};
+  for (const key in env) {
+    if (Object.hasOwn(env, key) && key.startsWith("PUBLIC_")) {
+      publicEnv[key] = String((env as Record<string, unknown>)[key]);
+    }
+  }
   return json({ publicEnv });
 };
 

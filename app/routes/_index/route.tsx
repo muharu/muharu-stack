@@ -2,9 +2,9 @@ import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { ClientLoaderFunction, Link } from "@remix-run/react";
 import { useQuery } from "@tanstack/react-query";
+import { queryClient } from "~/app";
 import { Button, buttonVariants } from "~/components/ui/button";
-import { api } from "~/lib/query/api.client";
-import { queryClient } from "~/lib/query/provider";
+import { helloQueryOption } from "./query";
 
 export const loader: LoaderFunction = async ({ context }) => {
   const { trpcCaller } = context;
@@ -13,10 +13,10 @@ export const loader: LoaderFunction = async ({ context }) => {
 };
 
 export const clientLoader: ClientLoaderFunction = async ({ serverLoader }) => {
-  const cache = queryClient.getQueryData(["hello"]);
+  const cache = queryClient.getQueryData(helloQueryOption.queryKey);
   if (cache) return cache;
-  const data = await serverLoader();
-  queryClient.setQueryData(["hello"], data);
+  const data = await serverLoader<typeof loader>();
+  queryClient.setQueryData(helloQueryOption.queryKey, data);
   return data;
 };
 clientLoader.hydrate = true;
@@ -26,13 +26,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function IndexPage() {
-  const { data, isLoading, refetch, isRefetching } = useQuery({
-    queryKey: ["hello"],
-    queryFn: async () => {
-      const data = await api.trpc.hello.query({ name: "Client Side Fetch" });
-      return data;
-    },
-  });
+  const { data, isLoading, refetch, isRefetching } = useQuery(helloQueryOption);
 
   return (
     <main className="flex h-screen flex-col items-center justify-center">
