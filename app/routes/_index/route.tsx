@@ -1,4 +1,8 @@
-import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import type {
+  LoaderFunction,
+  MetaFunction,
+  SerializeFrom,
+} from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { ClientLoaderFunction, Link } from "@remix-run/react";
 import { useQuery } from "@tanstack/react-query";
@@ -7,16 +11,22 @@ import { Button, buttonVariants } from "~/components/ui/button";
 import { helloQueryOption } from "./query";
 
 export const loader: LoaderFunction = async ({ context }) => {
-  const { trpcCaller } = context;
-  const data = await trpcCaller.hello({ name: "Server Side Fetch" });
-  return json(data);
+  try {
+    const { trpcCaller } = context;
+    const data = await trpcCaller.hello({ name: "Muharu" });
+    return json(data);
+  } catch {
+    return json({ data: null });
+  }
 };
 
 export const clientLoader: ClientLoaderFunction = async ({ serverLoader }) => {
-  const cache = queryClient.getQueryData(helloQueryOption.queryKey);
-  if (cache) return cache;
-  const data = await serverLoader<typeof loader>();
-  queryClient.setQueryData(helloQueryOption.queryKey, data);
+  const data = queryClient.getQueryData(helloQueryOption.queryKey);
+  if (!data) {
+    const serverData = await serverLoader<SerializeFrom<typeof loader>>();
+    queryClient.setQueryData(helloQueryOption.queryKey, serverData);
+    return serverData;
+  }
   return data;
 };
 clientLoader.hydrate = true;

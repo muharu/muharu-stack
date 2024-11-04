@@ -1,6 +1,11 @@
-import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import type {
+  LinksFunction,
+  LoaderFunction,
+  SerializeFrom,
+} from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
+  ClientLoaderFunction,
   Links,
   Meta,
   Scripts,
@@ -8,7 +13,7 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import { type PublicEnv } from "server/env";
-import { App } from "./app";
+import { App, queryClient } from "./app";
 import { ScriptPublicEnv } from "./components/shared/script-env";
 import "./tailwind.css";
 
@@ -22,6 +27,17 @@ export const loader: LoaderFunction = async ({ context }) => {
   }
   return json({ publicEnv });
 };
+
+export const clientLoader: ClientLoaderFunction = async ({ serverLoader }) => {
+  const data = queryClient.getQueryData<{ publicEnv: PublicEnv }>(["root"]);
+  if (!data) {
+    const serverData = await serverLoader<SerializeFrom<typeof loader>>();
+    queryClient.setQueryData<{ publicEnv: PublicEnv }>(["root"], serverData);
+    return serverData;
+  }
+  return data;
+};
+clientLoader.hydrate = true;
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },

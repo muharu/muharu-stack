@@ -1,4 +1,4 @@
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import { db } from "server/db";
 import { userTable } from "server/db/schema";
@@ -26,9 +26,10 @@ export const appRouter = router({
         .where(eq(userTable.name, input.name));
 
       if (!result) {
-        return {
-          message: `No user found with the name: ${input.name} in our database`,
-        };
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "User not found",
+        });
       }
 
       return {
