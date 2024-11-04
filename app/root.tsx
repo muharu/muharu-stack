@@ -9,7 +9,7 @@ import {
 } from "@remix-run/react";
 import { type PublicEnv } from "server/env";
 import { App } from "./app";
-import { ScriptPublicEnv } from "./lib/query/script-env";
+import { ScriptPublicEnv } from "./components/shared/script-env";
 import "./tailwind.css";
 
 export const loader: LoaderFunction = async ({ context }) => {

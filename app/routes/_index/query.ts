@@ -1,5 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
-import { api } from "~/lib/query/api.client";
+import { api } from "~/lib/api.client";
 
 export const helloQueryOption = queryOptions({
   queryKey: ["hello"],
