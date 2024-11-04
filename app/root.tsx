@@ -1,7 +1,27 @@
-import type { LinksFunction } from "@remix-run/node";
-import { Links, Meta, Scripts, ScrollRestoration } from "@remix-run/react";
+import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import {
+  Links,
+  Meta,
+  Scripts,
+  ScrollRestoration,
+  useLoaderData,
+} from "@remix-run/react";
+import { type ClientEnv } from "server/env";
 import { App } from "./app";
+import { ScriptPublicEnv } from "./lib/query/script-env";
 import "./tailwind.css";
+
+export const loader: LoaderFunction = async ({ context }) => {
+  const { env } = context;
+  const publicEnv = Object.keys(env)
+    .filter((key) => key.startsWith("PUBLIC_"))
+    .reduce((acc: { [key: string]: string }, key) => {
+      acc[key] = String(env[key as keyof typeof env]);
+      return acc;
+    }, {});
+  return json({ publicEnv });
+};
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -19,6 +39,7 @@ export const links: LinksFunction = () => [
 export function Document({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const { publicEnv } = useLoaderData<{ publicEnv: ClientEnv }>();
   return (
     <html lang="en">
       <Head />
@@ -26,6 +47,7 @@ export function Document({
         {children}
         <ScrollRestoration />
         <Scripts />
+        <ScriptPublicEnv pubicEnv={publicEnv} />
       </body>
     </html>
   );
