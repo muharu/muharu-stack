@@ -13,8 +13,9 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import { type PublicEnv } from "server/env";
-import { App, queryClient } from "./app";
+import { App } from "./app";
 import { ScriptPublicEnv } from "./components/shared/script-env";
+import { queryClient } from "./lib/query.client";
 import "./tailwind.css";
 
 export async function loader({ context }: LoaderFunctionArgs) {
