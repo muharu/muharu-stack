@@ -5,16 +5,15 @@ import {
   Link,
   useLoaderData,
 } from "@remix-run/react";
-import { useQuery } from "@tanstack/react-query";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { handleTRPCError } from "~/lib/errors";
 import { queryClient } from "~/lib/query.client";
-import { userQueryOption } from "./query";
+import { useGetUser, userQueryOption } from "~/query/user.query";
 
 export async function loader({ context }: LoaderFunctionArgs) {
   const { trpcCaller } = context;
   try {
-    const data = await trpcCaller.hello({ name: "Muharu" });
+    const data = await trpcCaller.user({ name: "Muharu" });
     return json(data);
   } catch (error) {
     const handledError = handleTRPCError(error);
@@ -47,12 +46,8 @@ export const meta: MetaFunction = () => {
 };
 
 export default function IndexPage() {
-  const serverData = useLoaderData<typeof clientLoader>();
-  const { data, isLoading, refetch, isRefetching } = useQuery({
-    ...userQueryOption,
-    enabled: !!serverData,
-    initialData: serverData ?? undefined,
-  });
+  const initialData = useLoaderData<typeof clientLoader>();
+  const { data, isLoading, refetch, isRefetching } = useGetUser(initialData);
 
   return (
     <main className="flex h-screen flex-col items-center justify-center">

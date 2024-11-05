@@ -17,7 +17,7 @@ const mockDB = [
 ];
 
 export const appRouter = router({
-  hello: publicProcedure
+  user: publicProcedure
     .input(
       z.object({
         name: z.string(),

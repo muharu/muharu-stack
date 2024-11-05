@@ -1,6 +1,10 @@
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { AppRouter } from "server/trpc";
 
+declare global {
+  const PUBLIC_BASE_URL: string;
+}
+
 /**
  * Inference helper for inputs.
  *

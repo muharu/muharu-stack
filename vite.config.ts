@@ -18,6 +18,9 @@ export default defineConfig({
   server: {
     port: process.env.PORT ? Number(process.env.PORT) : 3000,
   },
+  define: {
+    PUBLIC_BASE_URL: JSON.stringify(process.env.PUBLIC_BASE_URL),
+  },
   plugins: [
     devServer({
       adapter,
