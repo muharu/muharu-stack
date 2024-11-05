@@ -1,11 +1,11 @@
 import type {
   LinksFunction,
-  LoaderFunction,
+  LoaderFunctionArgs,
   SerializeFrom,
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
-  ClientLoaderFunction,
+  ClientLoaderFunctionArgs,
   Links,
   Meta,
   Scripts,
@@ -17,7 +17,7 @@ import { App, queryClient } from "./app";
 import { ScriptPublicEnv } from "./components/shared/script-env";
 import "./tailwind.css";
 
-export const loader: LoaderFunction = async ({ context }) => {
+export async function loader({ context }: LoaderFunctionArgs) {
   const { env } = context;
   const publicEnv: { [key: string]: string } = {};
   for (const key in env) {
@@ -25,18 +25,19 @@ export const loader: LoaderFunction = async ({ context }) => {
       publicEnv[key] = String((env as Record<string, unknown>)[key]);
     }
   }
-  return json({ publicEnv });
-};
+  return json({ publicEnv: publicEnv as PublicEnv });
+}
 
-export const clientLoader: ClientLoaderFunction = async ({ serverLoader }) => {
-  const data = queryClient.getQueryData<{ publicEnv: PublicEnv }>(["root"]);
+export async function clientLoader({ serverLoader }: ClientLoaderFunctionArgs) {
+  const data = queryClient.getQueryData<SerializeFrom<typeof loader>>(["root"]);
   if (!data) {
     const serverData = await serverLoader<SerializeFrom<typeof loader>>();
-    queryClient.setQueryData<{ publicEnv: PublicEnv }>(["root"], serverData);
+    queryClient.setQueryData(["root"], serverData);
     return serverData;
   }
   return data;
-};
+}
+
 clientLoader.hydrate = true;
 
 export const links: LinksFunction = () => [
@@ -55,7 +56,7 @@ export const links: LinksFunction = () => [
 export function Document({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const { publicEnv } = useLoaderData<{ publicEnv: PublicEnv }>();
+  const { publicEnv } = useLoaderData<typeof clientLoader>();
   return (
     <html lang="en">
       <Head />

@@ -1,34 +1,41 @@
-import type {
-  LoaderFunction,
-  MetaFunction,
-  SerializeFrom,
-} from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { ClientLoaderFunction, Link } from "@remix-run/react";
+import type { MetaFunction, SerializeFrom } from "@remix-run/node";
+import { json, LoaderFunctionArgs } from "@remix-run/node";
+import { ClientLoaderFunctionArgs, Link } from "@remix-run/react";
 import { useQuery } from "@tanstack/react-query";
 import { queryClient } from "~/app";
 import { Button, buttonVariants } from "~/components/ui/button";
-import { helloQueryOption } from "./query";
+import { handleTRPCError } from "~/lib/errors";
+import { userQueryOption } from "./query";
 
-export const loader: LoaderFunction = async ({ context }) => {
+export async function loader({ context }: LoaderFunctionArgs) {
+  const { trpcCaller } = context;
   try {
-    const { trpcCaller } = context;
     const data = await trpcCaller.hello({ name: "Muharu" });
-    return json(data);
-  } catch {
-    return json({ data: null });
+    return json({ data });
+  } catch (error) {
+    const handledError = handleTRPCError(error);
+    if (handledError.code === "NOT_FOUND") {
+      return json({ data: null });
+    }
   }
-};
+}
 
-export const clientLoader: ClientLoaderFunction = async ({ serverLoader }) => {
-  const data = queryClient.getQueryData(helloQueryOption.queryKey);
+export async function clientLoader({ serverLoader }: ClientLoaderFunctionArgs) {
+  const data = queryClient.getQueryData<SerializeFrom<typeof loader>>(
+    userQueryOption.queryKey,
+  );
   if (!data) {
     const serverData = await serverLoader<SerializeFrom<typeof loader>>();
-    queryClient.setQueryData(helloQueryOption.queryKey, serverData);
+    if (!serverData?.data) return null;
+    queryClient.setQueryData<SerializeFrom<typeof loader>>(
+      userQueryOption.queryKey,
+      serverData,
+    );
     return serverData;
   }
   return data;
-};
+}
+
 clientLoader.hydrate = true;
 
 export const meta: MetaFunction = () => {
@@ -36,11 +43,14 @@ export const meta: MetaFunction = () => {
 };
 
 export default function IndexPage() {
-  const { data, isLoading, refetch, isRefetching } = useQuery(helloQueryOption);
+  const { data, isLoading, refetch, isRefetching } = useQuery(userQueryOption);
 
   return (
     <main className="flex h-screen flex-col items-center justify-center">
-      <h1>{isLoading || isRefetching ? "Loading..." : data?.message}</h1>
+      <div className="my-4">
+        {isLoading || isRefetching ? "Loading..." : JSON.stringify(data)}
+      </div>
+
       <Button onClick={() => refetch()}>Refetch</Button>
       <div className="mt-4 flex gap-x-2">
         <Link to="/signin" className={buttonVariants()}>

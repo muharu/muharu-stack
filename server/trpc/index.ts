@@ -1,7 +1,4 @@
 import { initTRPC, TRPCError } from "@trpc/server";
-import { eq } from "drizzle-orm";
-import { db } from "server/db";
-import { userTable } from "server/db/schema";
 import superjson from "superjson";
 import { z } from "zod";
 
@@ -12,6 +9,13 @@ const t = initTRPC.create({
 const publicProcedure = t.procedure;
 const router = t.router;
 
+const mockDB = [
+  {
+    name: "Muharu",
+    age: 20,
+  },
+];
+
 export const appRouter = router({
   hello: publicProcedure
     .input(
@@ -20,10 +24,7 @@ export const appRouter = router({
       }),
     )
     .query(async ({ input }) => {
-      const [result] = await db
-        .select({ email: userTable.email })
-        .from(userTable)
-        .where(eq(userTable.name, input.name));
+      const result = mockDB.find(({ name }) => input.name === name);
 
       if (!result) {
         throw new TRPCError({
@@ -32,9 +33,7 @@ export const appRouter = router({
         });
       }
 
-      return {
-        message: `This is your email from Database: ${result.email}`,
-      };
+      return result;
     }),
 });
 

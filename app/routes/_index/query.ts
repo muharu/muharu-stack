@@ -2,8 +2,8 @@ import { queryOptions } from "@tanstack/react-query";
 import { api } from "~/lib/api.client";
 import { handleTRPCError } from "~/lib/errors";
 
-export const helloQueryOption = queryOptions({
-  queryKey: ["hello"],
+export const userQueryOption = queryOptions({
+  queryKey: ["user"],
   queryFn: async () => {
     const data = await api.trpc.hello.query({ name: "Muharu" });
     return data;
