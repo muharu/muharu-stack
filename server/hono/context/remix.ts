@@ -6,9 +6,12 @@ import { env } from "server/env";
 import { AppRouter, createCaller } from "server/trpc";
 
 export function getLoadContext(c: Context) {
-  const trpcCaller = createCaller({});
-  const trpc = trpcFetcher(c.req.raw);
-  return { env, trpc, trpcCaller };
+  const caller = createCaller({
+    honoCtx: c,
+  });
+  const api = fetchTRPCProcedure(c.req.raw);
+  const trpc = { api, caller };
+  return { env, trpc };
 }
 
 declare module "@remix-run/node" {
@@ -16,7 +19,7 @@ declare module "@remix-run/node" {
   interface AppLoadContext extends ReturnType<typeof getLoadContext> {}
 }
 
-export const trpcFetcher = (request?: Request) => {
+export const fetchTRPCProcedure = (request?: Request) => {
   return createTRPCClient<AppRouter>({
     links: [
       httpBatchLink({

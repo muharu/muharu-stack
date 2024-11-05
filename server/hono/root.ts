@@ -3,8 +3,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { csrf } from "hono/csrf";
 import { env } from "server/env";
-import { appRouter } from "server/trpc";
-import { authRoute } from "./api/routes/auth.route";
+import { appRouter, createTRPCContext } from "server/trpc";
 
 const restApiApp = new Hono().basePath("/api");
 
@@ -21,14 +20,22 @@ export const apiRoutes = restApiApp
     csrf({
       origin: env.NODE_ENV !== "production" ? "*" : [env.PUBLIC_BASE_URL],
     }),
-  )
-  .route("/auth", authRoute);
+  );
 
 apiRoutes.use(
   "/procedure/*",
   trpcServer({
     router: appRouter,
+    createContext: createTRPCContext,
     endpoint: "/api/procedure",
+    onError:
+      env.NODE_ENV === "development"
+        ? ({ path, error }) => {
+            console.error(
+              `❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`,
+            );
+          }
+        : undefined,
   }),
 );
 

@@ -11,9 +11,9 @@ import { queryClient } from "~/lib/query.client";
 import { useGetUser, userQueryOption } from "~/query/user.query";
 
 export async function loader({ context }: LoaderFunctionArgs) {
-  const { trpcCaller } = context;
+  const { trpc } = context;
   try {
-    const data = await trpcCaller.user({ name: "Muharu" });
+    const data = await trpc.caller.user.getOne({ name: "Muharu" });
     return json(data);
   } catch (error) {
     const handledError = handleTRPCError(error);
