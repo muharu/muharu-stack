@@ -2,7 +2,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import chalk from "chalk";
 import { Context } from "hono";
-import { getUserFromCookie } from "server/auth";
+import { auth } from "server/auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -87,7 +87,7 @@ export const timingMiddleware = t.middleware(async ({ next, path }) => {
  * @throws TRPCError with code "UNAUTHORIZED" if the user is not authenticated
  */
 export const authMiddleware = t.middleware(async ({ ctx, next }) => {
-  const { user, session } = await getUserFromCookie(ctx.honoCtx.req.raw);
+  const { user, session } = await auth.validateRequest(ctx.honoCtx.req.raw);
   if (!user) throw new TRPCError({ code: "UNAUTHORIZED" });
   return next({
     ctx: {

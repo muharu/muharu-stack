@@ -1,5 +1,7 @@
 import { validateSessionToken } from "./session";
 
+export type * from "./oauth/types";
+
 export interface CreateSession {
   token: string;
   userId: string;
