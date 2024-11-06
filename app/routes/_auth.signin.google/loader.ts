@@ -7,9 +7,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
     request,
   });
   if (!validData) return redirect("/signin");
-
-  const { code } = validData;
-  if (code) redirect("/signin");
-
+  const { code, codeVerifier } = validData;
+  console.log("code", code);
+  console.log("codeVerifier", codeVerifier);
   return null;
 }

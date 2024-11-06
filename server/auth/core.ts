@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { COOKIE_NAME } from "./constants";
 import { validateBasicPKCE, validateGooglePKCE } from "./oauth/pkce";
 import { createGoogleAuthURL } from "./oauth/provider/google";
@@ -64,7 +63,7 @@ export class Auth {
   }: {
     provider: OAuthProvider;
     request: Request;
-  }): { code: string } | null {
+  }) {
     const stateFromUrl = getQueryParam(request, "state");
     const codeFromUrl = getQueryParam(request, "code");
     const stateFromCookie = getCookie(request, COOKIE_NAME.GOOGLE_STATE);
@@ -73,46 +72,22 @@ export class Auth {
         request,
         COOKIE_NAME.GOOGLE_CODE_VERIFIER,
       );
-      const isValidPKCE = validateGooglePKCE({
+      const validData = validateGooglePKCE({
         codeFromUrl,
         stateFromUrl,
         stateFromCookie,
         codeVerifierFromCookie,
       });
-      if (!isValidPKCE) return null;
-      const schema = z.object({
-        stateFromUrl: z.string(),
-        codeFromUrl: z.string(),
-        stateFromCookie: z.string(),
-        codeVerifierFromCookie: z.string(),
-      });
-      const result = schema.safeParse({
-        stateFromUrl,
-        codeFromUrl,
-        stateFromCookie,
-        codeVerifierFromCookie,
-      });
-      if (!result.success) return null;
-      return { code: result.data.codeFromUrl };
+      if (!validData) return null;
+      return { code: validData.code, codeVerifier: validData.codeVerifier };
     } else {
-      const schema = z.object({
-        stateFromUrl: z.string(),
-        codeFromUrl: z.string(),
-        stateFromCookie: z.string(),
-      });
-      const isValidPKCE = validateBasicPKCE({
+      const validData = validateBasicPKCE({
         codeFromUrl,
         stateFromUrl,
         stateFromCookie,
       });
-      if (!isValidPKCE) return null;
-      const result = schema.safeParse({
-        stateFromUrl,
-        codeFromUrl,
-        stateFromCookie,
-      });
-      if (!result.success) return null;
-      return { code: result.data.codeFromUrl };
+      if (!validData) return null;
+      return { code: validData.code };
     }
   }
 }

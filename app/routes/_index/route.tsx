@@ -1,5 +1,5 @@
-import type { MetaFunction, SerializeFrom } from "@remix-run/node";
-import { json, LoaderFunctionArgs } from "@remix-run/node";
+import type { MetaFunction } from "@remix-run/node";
+import { LoaderFunctionArgs } from "@remix-run/node";
 import {
   ClientLoaderFunctionArgs,
   Link,
@@ -14,23 +14,23 @@ export async function loader({ context }: LoaderFunctionArgs) {
   const { trpc } = context;
   try {
     const data = await trpc.caller.user.getOne({ name: "Muharu" });
-    return json(data);
+    return data;
   } catch (error) {
     const handledError = handleTRPCError(error);
     if (handledError.code === "NOT_FOUND") {
-      return json(null);
+      return null;
     }
   }
 }
 
 export async function clientLoader({ serverLoader }: ClientLoaderFunctionArgs) {
-  const data = queryClient.getQueryData<SerializeFrom<typeof loader>>(
+  const data = queryClient.getQueryData<Awaited<ReturnType<typeof loader>>>(
     userQueryOption.queryKey,
   );
   if (!data) {
-    const serverData = await serverLoader<SerializeFrom<typeof loader>>();
+    const serverData = await serverLoader<Awaited<ReturnType<typeof loader>>>();
     if (!serverData) return null;
-    queryClient.setQueryData<SerializeFrom<typeof loader>>(
+    queryClient.setQueryData<Awaited<ReturnType<typeof loader>>>(
       userQueryOption.queryKey,
       serverData,
     );

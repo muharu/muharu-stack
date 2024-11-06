@@ -27,7 +27,7 @@ export default function SigninPage() {
         disabled={state === "submitting"}
         onClick={() => signin.oauth("google")}
       >
-        <FaGoogle className="size-5" /> Signup with Google
+        <FaGoogle className="size-5" /> Signin with Google
       </Button>
     </main>
   );
