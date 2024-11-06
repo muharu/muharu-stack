@@ -5,9 +5,8 @@ import { z } from "zod";
 export const serverEnv = z.object({
   NODE_ENV: z.enum(["development", "production"]).optional(),
   DATABASE_URL: z.string(),
-  AUTH_SECRET: z.string(),
-  AUTH_GITHUB_CLIENT_ID: z.string().optional(),
-  AUTH_GITHUB_CLIENT_SECRET: z.string().optional(),
+  AUTH_GOOGLE_CLIENT_ID: z.string(),
+  AUTH_GOOGLE_CLIENT_SECRET: z.string(),
   PORT: z
     .string()
     .transform((v) => Number(v))

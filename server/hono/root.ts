@@ -11,14 +11,14 @@ export const apiRoutes = restApiApp
   .use(
     "*",
     cors({
-      origin: env.NODE_ENV !== "production" ? "*" : [env.PUBLIC_BASE_URL],
+      origin: [env.PUBLIC_BASE_URL],
       credentials: true,
     }),
   )
   .use(
     "*",
     csrf({
-      origin: env.NODE_ENV !== "production" ? "*" : [env.PUBLIC_BASE_URL],
+      origin: [env.PUBLIC_BASE_URL],
     }),
   );
 

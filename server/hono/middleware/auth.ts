@@ -1,8 +1,8 @@
 import { createMiddleware } from "hono/factory";
-import { getUserFromCookie } from "server/auth";
+import { auth } from "server/auth";
 
-export const auth = createMiddleware(async (ctx, next) => {
-  const { user, session, headers } = await getUserFromCookie(ctx.req.raw);
+export const authMiddleware = createMiddleware(async (ctx, next) => {
+  const { user, session, headers } = await auth.validateRequest(ctx.req.raw);
 
   ctx.set("user", user);
   ctx.set("session", session);

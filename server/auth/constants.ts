@@ -1,3 +1,5 @@
 export const COOKIE_NAME = {
   SESSION_TOKEN: "_A1zx3",
+  GOOGLE_CODE_VERIFIER: "_1Axz3",
+  GOOGLE_STATE: "_10xA",
 };
